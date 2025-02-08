@@ -94,7 +94,7 @@ def plot_wave_states(results, x):
         axs[i].grid(True)
 
     plt.tight_layout()
-    plt.savefig('wave_evolution.png')
+    plt.savefig('fig/wave_evolution.png')
     plt.show()
 
 
@@ -128,4 +128,4 @@ if __name__ == "__main__":
     results = run_simulation(u, x, c, dt, dx, init_cons, num_steps)
     plot_wave_states(results, x)
     for i in range(len(init_cons)):
-        animate_wave(results, x, i, f'wave_animation_condition_{i + 1}.mp4')
+        animate_wave(results, x, i, f'fig/wave_animation_condition_{i + 1}.mp4')
