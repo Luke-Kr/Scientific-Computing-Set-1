@@ -77,7 +77,7 @@ def run_simulation(u, x, c, dt, dx, init_cons, num_steps):
 def plot_wave_states(results, x):
     """Plot wave states for each initial condition at different time steps."""
     num_conditions = results.shape[0]
-    time_indices = [0, int(results.shape[2] / 3),
+    time_indices = [int(results.shape[2] / 3),
                     int(2 * results.shape[2] / 3), results.shape[2] - 1]
 
     fig, axs = plt.subplots(num_conditions, 1, figsize=(10, 8))
