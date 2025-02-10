@@ -74,18 +74,19 @@ def run_simulation(u, x, c, dt, dx, init_cons, num_steps):
     return results
 
 
-def plot_wave_states(results, x):
-    """Plot wave states for each initial condition at different time steps."""
+def plot_wave_states(results, x, num_time_points=5):
+    """Plot wave states for each initial condition at evenly spaced time steps."""
     num_conditions = results.shape[0]
-    time_indices = [int(results.shape[2] / 3),
-                    int(2 * results.shape[2] / 3), results.shape[2] - 1]
+    time_indices = np.linspace(0.0, results.shape[2] - 1, num_time_points, dtype=int)  # Evenly spaced indices
 
     fig, axs = plt.subplots(num_conditions, 1, figsize=(10, 8))
 
+    if num_conditions == 1:
+        axs = [axs]  # Ensure axs is iterable for a single subplot
+
     for i in range(num_conditions):
         for t_idx in time_indices:
-            axs[i].plot(x, results[i, :, t_idx],
-                        label=f'Time = {t_idx * dt:.2f}s')
+            axs[i].plot(x, results[i, :, t_idx], label=f'Time = {t_idx * dt:.2f}s')
 
         axs[i].set_title(f'Wave Evolution for Initial Condition {i + 1}')
         axs[i].set_xlabel('Position along the string (x)')
