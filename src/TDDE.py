@@ -8,13 +8,13 @@ import scipy as sp
 N = 100
 D = 1
 dx = dy = 1.0 / N
-dt = 0.00001
+dt = 0.000001
 
 const = D * dt / dx**2
 print(f"const: {const}")
 
 tmax = 1
-tsteps = 100_000
+tsteps = 1_000_000
 print(f"tsteps: {tsteps}")
 
 # Create a grid with layout [[c, y, x], [c, y, x]]
