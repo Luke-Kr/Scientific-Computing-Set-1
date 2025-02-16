@@ -1,10 +1,28 @@
+"""
+Jacobi Iterative Method for Solving Laplace's Equation
+
+This script simulates the steady-state solution of Laplace's equation using the Jacobi iterative method.
+It iteratively updates a 2D grid until convergence is achieved within a specified tolerance.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 from numba import jit
 
-
 @jit(nopython=True)
-def run_simulation(grid, max_iter, N, tol):
+def jacobi_simulation(grid: np.ndarray, max_iter: int, N: int, tol: float):
+    """
+    Runs the Jacobi iterative method for solving Laplace's equation.
+
+    Parameters:
+    grid (np.ndarray): 3D NumPy array representing the simulation grid (2, N+1, N+1).
+    max_iter (int): Maximum number of iterations before stopping.
+    N (int): Grid size (N x N domain with additional boundary layer).
+    tol (float): Convergence tolerance.
+
+    Returns:
+    tuple: (history, t) where history is a list of grid states and t is the iteration count.
+    """
     history = [grid[0].copy()]
     for t in range(1, max_iter + 1):
         for i in range(N + 1):
@@ -30,9 +48,9 @@ def run_simulation(grid, max_iter, N, tol):
 
 if __name__ == '__main__':
     # Parameters
-    N = 100
-    max_iter = 1_000_000
-    tol = 1e-5
+    N = 100  # Grid size
+    max_iter = 1_000_000  # Maximum iterations
+    tol = 1e-5  # Convergence tolerance
     print(f"max_iter: {max_iter}")
 
     grid = np.zeros((2, N + 1, N + 1))
@@ -40,7 +58,7 @@ if __name__ == '__main__':
     print("Grid shape:", grid.shape)
 
     # Run the simulation
-    history, t = run_simulation(grid, max_iter, N, tol)
+    history, t = jacobi_simulation(grid, max_iter, N, tol)
     history = np.array(history)
     np.save(f'data/jacobi_({N}x{N})_{t}.npy', history)
 

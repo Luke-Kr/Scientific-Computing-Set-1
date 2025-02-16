@@ -9,12 +9,10 @@ N = 100  # Number of spatial points
 c = 1.0  # Wave speed
 T = 2.0  # Total simulation time
 
-# Discretization
 dx = L / N
 dt = 0.01
 num_steps = int(T / dt)
 
-# Initialize solution arrays
 u = np.zeros((N + 1, 3))  # Three time layers (n-1, n, n+1)
 x = np.linspace(0, L, N + 1)
 
@@ -49,7 +47,6 @@ def time_stepping(u, c, dt, dx, initial_condition, num_steps):
             u[j, 2] = (2 * u[j, 1] - u[j, 0] +
                        (c * dt / dx) ** 2 * (u[j + 1, 1] - 2 * u[j, 1] + u[j - 1, 1]))
 
-        # Apply boundary conditions
         u[0, 2] = 0  # Boundary condition at x=0
         u[N, 2] = 0  # Boundary condition at x=L
 
@@ -65,8 +62,8 @@ def run_simulation(u, x, c, dt, dx, init_cons, num_steps):
     """Run the simulation with different initial conditions."""
     results = []
     for init_con in init_cons:
-        initial_condition = init_con(x)  # Evaluate the initial condition function
-        result = time_stepping(u, c, dt, dx, initial_condition, num_steps)  # Pass the evaluated initial condition
+        initial_condition = init_con(x)  
+        result = time_stepping(u, c, dt, dx, initial_condition, num_steps) 
         results.append(result)
 
     results = np.array(results)
@@ -111,7 +108,6 @@ def animate_wave(results, x, init_condition_index, filename):
     line, = ax.plot(x, results[init_condition_index, :, 0], color='b')  # Initial plot
 
     def update(frame):
-        # Update the line with the new data
         line.set_ydata(results[init_condition_index, :, frame])
         return line,
 
@@ -120,7 +116,7 @@ def animate_wave(results, x, init_condition_index, filename):
 
     # Save the animation as a GIF
     ani.save(filename.replace('.mp4', '.gif'),
-             writer='pillow', fps=30)  # Use Pillow writer
+             writer='pillow', fps=30)  
 
 
 if __name__ == "__main__":

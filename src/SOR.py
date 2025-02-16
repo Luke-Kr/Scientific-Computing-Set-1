@@ -1,11 +1,30 @@
+"""
+Successive Over-Relaxation (SOR) Method for Solving Laplace's Equation
+
+This script simulates the steady-state solution of Laplace's equation using the Successive Over-Relaxation (SOR) method.
+It iteratively updates a 2D grid until convergence is achieved within a specified tolerance.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 from numba import jit
 
-
 @jit(nopython=True)
-def run_simulation(omega, grid, max_iter, N, tol):
-    history = [grid.copy()]  # Store the initial state
+def sor_simulation(omega: float, grid: np.ndarray, max_iter: int, N: int, tol: float):
+    """
+    Runs the Successive Over-Relaxation (SOR) iterative method for solving Laplace's equation.
+
+    Parameters:
+    omega (float): Relaxation factor for SOR.
+    grid (np.ndarray): 2D NumPy array representing the simulation grid (N+1, N+1).
+    max_iter (int): Maximum number of iterations before stopping.
+    N (int): Grid size (N x N domain with additional boundary layer).
+    tol (float): Convergence tolerance.
+
+    Returns:
+    tuple: (history, t) where history is a list of grid states and t is the iteration count.
+    """
+    history = [grid.copy()]  
     for t in range(1, max_iter + 1):
         diff = 0.0
 
@@ -19,7 +38,7 @@ def run_simulation(omega, grid, max_iter, N, tol):
                 up = grid[i + 1, j]
                 down = grid[i - 1, j]
 
-                # Gauss-Seidel update
+                # SOR update
                 grid[i, j] = (1 - omega) * old + (omega / 4) * (up + down + left + right)
                 diff = max(diff, abs(grid[i, j] - old))  # Track max change
 
@@ -43,22 +62,20 @@ def run_simulation(omega, grid, max_iter, N, tol):
 
     return history, t
 
-
 if __name__ == '__main__':
     # Parameters
     N = 100             # Grid size (N+1) x (N+1)
     max_iter = 10000
     tol = 1e-5
+    omega = 1.9  # Relaxation factor
     print(f"max_iter: {max_iter}")
 
-    # Create a 2D grid
     grid = np.zeros((N + 1, N + 1))
     grid[N, :] = 1.0  # Top boundary condition c(x, y=1) = 1
     print("Grid shape:", grid.shape)
 
     # Run the simulation
-    omega = 1.9
-    history, t = run_simulation(omega, grid, max_iter, N, tol)
+    history, t = sor_simulation(omega, grid, max_iter, N, tol)
     history = np.array(history)
     np.save(f'data/SOR_({N}x{N})_{t}.npy', history)
 
