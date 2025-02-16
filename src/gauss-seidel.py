@@ -2,35 +2,31 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numba import jit
 
-
 @jit(nopython=True)
 def run_simulation(grid, max_iter, tol, N):
     history = [grid.copy()]
     for t in range(1, max_iter + 1):
         diff = 0.0
 
-        for i in range(1, N):
-            for j in range(N):
+        for i in range(1, N):  
+            for j in range(N + 1):  
                 old = grid[i, j]
-                left = grid[i, (j - 1) % N]
-                right = grid[i, (j + 1) % N]
-                up = grid[i + 1, j]
-                down = grid[i - 1, j]
+                left = grid[i, (j - 1) % (N + 1)]  
+                right = grid[i, (j + 1) % (N + 1)]  
+                up = grid[i + 1, j]  
+                down = grid[i - 1, j]  
 
                 # Gauss-Seidel update
                 grid[i, j] = 0.25 * (up + down + left + right)
                 diff = max(diff, abs(grid[i, j] - old))  # Track max change
 
-            # Ensure periodicity for the x-boundary
+
+            # Ensure periodicity for the x-boundary (rightmost column)
             grid[i, N] = grid[i, 0]
 
-        # Reapply fixed boundary conditions
-        grid[0, :] = 0.0
-        grid[N, :] = 1.0
-
-        # Enforce periodicity
-        grid[0, N] = grid[0, 0]
-        grid[N, N] = grid[N, 0]
+        # Reapply fixed y-boundary conditions
+        grid[0, :] = 0.0       
+        grid[N, :] = 1.0       
 
         history.append(grid.copy())
         if diff < tol:
@@ -40,7 +36,6 @@ def run_simulation(grid, max_iter, tol, N):
             print(f"Iteration {t}: max change = {diff}")
 
     return history, t
-
 
 if __name__ == '__main__':
     # Parameters

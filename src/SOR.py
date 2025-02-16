@@ -2,8 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numba import jit
 
-# Function to run Gauss-Seidel simulation
-
 
 @jit(nopython=True)
 def run_simulation(omega, grid, max_iter, N, tol):
@@ -22,11 +20,11 @@ def run_simulation(omega, grid, max_iter, N, tol):
                 down = grid[i - 1, j]
 
                 # Gauss-Seidel update
-                grid[i, j] = (omega / 4) * (up + down + left + right)
+                grid[i, j] = (1 - omega) * old + (omega / 4) * (up + down + left + right)
                 diff = max(diff, abs(grid[i, j] - old))  # Track max change
 
             # Ensure periodicity for the x-boundary
-            grid[i, N] = grid[i, 0]
+            grid[i, -1] = grid[i, 0]
 
         # Reapply fixed boundary conditions
         grid[0, :] = 0.0   # Bottom: c(x, y=0) = 0
@@ -49,7 +47,7 @@ def run_simulation(omega, grid, max_iter, N, tol):
 if __name__ == '__main__':
     # Parameters
     N = 100             # Grid size (N+1) x (N+1)
-    max_iter = 1_000_000
+    max_iter = 10000
     tol = 1e-5
     print(f"max_iter: {max_iter}")
 
@@ -59,7 +57,7 @@ if __name__ == '__main__':
     print("Grid shape:", grid.shape)
 
     # Run the simulation
-    omega = 1.0
+    omega = 1.9
     history, t = run_simulation(omega, grid, max_iter, N, tol)
     history = np.array(history)
     np.save(f'data/SOR_({N}x{N})_{t}.npy', history)

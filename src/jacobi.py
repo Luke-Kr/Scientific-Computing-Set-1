@@ -10,8 +10,8 @@ def run_simulation(grid, max_iter, N, tol):
         for i in range(N + 1):
             for j in range(1, N):
                 grid[1, i, j] = 0.25 * (
-                    grid[0, (i + 1) % N, j] +
-                    grid[0, (i - 1) % N, j] +
+                    grid[0, (i + 1) % (N + 1), j] +
+                    grid[0, (i - 1) % (N + 1), j] +
                     grid[0, i, j + 1] +
                     grid[0, i, j - 1]
                 )
@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     # Plot the final result
     print("Final history shape:", history.shape)
-    plt.imshow(history[-1], cmap='inferno')
+    plt.imshow(history[-1].T, cmap='inferno', origin='lower')
     plt.title(f'Jacobi Convergence at t = {t}')
     plt.colorbar()
     plt.show()

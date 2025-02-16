@@ -13,14 +13,14 @@ def run_simulation(grid, const, tsteps, N):
         for i in range(N + 1):
             for j in range(1, N):
                 grid[1, i, j] = grid[0, i, j] + const * (
-                    grid[0, (i + 1) % N, j] +
-                    grid[0, (i - 1) % N, j] +
+                    grid[0, (i + 1) % (N + 1), j] +
+                    grid[0, (i - 1) % (N + 1), j] +
                     grid[0, i, j + 1] +
                     grid[0, i, j - 1] -
                     4 * grid[0, i, j]
                 )
 
-        grid[0] = grid[1].copy()  # Update grid[0] with grid[1]
+        grid[0], grid[1] = grid[1], grid[0]
         if t % 1000 == 0:
             history[int(t / 1000)] = grid[0]
         print(f"t: {t}")
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     dx = dy = 1.0 / N
     dt = 0.000001
     const = D * dt / dx**2
-    tsteps = 1_000_000
+    tsteps = 1000_000
 
     print(f"const: {const}")
     print(f"tsteps: {tsteps}")
