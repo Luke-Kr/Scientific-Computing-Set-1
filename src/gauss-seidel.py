@@ -42,7 +42,7 @@ def gauss_seidel_simulation(grid: np.ndarray, max_iter: int, tol: float, N: int)
             # Ensure periodicity for the x-boundary (rightmost column)
             grid[i, N] = grid[i, 0]
 
-        # Reapply fixed y-boundary conditions
+        # Apply fixed y-boundary conditions
         grid[0, :] = 0.0       
         grid[N, :] = 1.0       
 
