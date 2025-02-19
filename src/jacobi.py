@@ -23,24 +23,24 @@ def jacobi_simulation(grid: np.ndarray, max_iter: int, N: int, tol: float):
     Returns:
     tuple: (history, t) where history is a list of grid states and t is the iteration count.
     """
-    history = [grid[0].copy()]
+    history = [grid.copy()]
     for t in range(1, max_iter + 1):
+        prev = history[-1]
         for i in range(N + 1):
             for j in range(1, N):
-                grid[1, i, j] = 0.25 * (
-                    grid[0, (i + 1) % (N + 1), j] +
-                    grid[0, (i - 1) % (N + 1), j] +
-                    grid[0, i, j + 1] +
-                    grid[0, i, j - 1]
+                grid[i, j] = 0.25 * (
+                    prev[(i + 1) % (N + 1), j] +
+                    prev[(i - 1) % (N + 1), j] +
+                    prev[i, j + 1] +
+                    prev[i, j - 1]
                 )
 
         # Check for convergence
-        if np.allclose(grid[0], grid[1], atol=tol):
+        if np.allclose(grid, history[-1], atol=tol):
             print(f"Converged at t = {t}")
             break
 
-        grid[0] = grid[1].copy()  # Update grid[0] with grid[1]
-        history.append(grid[0].copy())  # Store the current state in history
+        history.append(grid.copy())  # Store the current state in history
         print(f"t: {t}")
 
     return history, t
@@ -53,9 +53,10 @@ if __name__ == '__main__':
     tol = 1e-5  # Convergence tolerance
     print(f"max_iter: {max_iter}")
 
-    grid = np.zeros((2, N + 1, N + 1))
-    grid[:, :, N] = 1.0  # Set top boundary condition c(x, y=1) = 1
+    grid = np.zeros((N + 1, N + 1))
+    grid[:, N] = 1.0  # Set top boundary condition c(x, y=1) = 1
     print("Grid shape:", grid.shape)
+    print("Initial grid: \n", grid)
 
     # Run the simulation
     history, t = jacobi_simulation(grid, max_iter, N, tol)
