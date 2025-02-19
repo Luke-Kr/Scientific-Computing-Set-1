@@ -7,7 +7,7 @@ from numba import jit
 L = 1.0  # Length of string
 N = 200  # Number of spatial points
 c = 1.0  # Wave speed
-T = 0.5  # Total simulation time
+T = 1  # Total simulation time
 dx = L / N
 dt = 0.001
 num_steps = int(T / dt)
@@ -66,7 +66,7 @@ def run_simulation(u, x, c, dt, dx, init_cons, num_steps):
         results.append(result)
     return np.array(results)
 
-def plot_wave_states(results, x, num_time_points=5):
+def plot_wave_states(results, x, num_time_points=3):
     num_conditions = results.shape[0]
     time_indices = np.linspace(0, results.shape[2] - 1, num_time_points, dtype=int)
     fig, axs = plt.subplots(num_conditions, 1, figsize=(10, 8))
@@ -87,7 +87,7 @@ def plot_wave_states(results, x, num_time_points=5):
     plt.show()
 
 def animate_wave(results, x, init_condition_index, filename):
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(12, 8))
     ax.set_xlim(0, x[-1])
     y_min, y_max = results.min(), results.max()
     ax.set_ylim(y_min * 1.2, y_max * 1.2)
