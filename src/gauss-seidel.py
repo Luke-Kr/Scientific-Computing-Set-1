@@ -37,27 +37,31 @@ def gauss_seidel_simulation(grid: np.ndarray, max_iter: int, tol: float, N: int)
 
                 # Gauss-Seidel update
                 grid[i, j] = 0.25 * (up + down + left + right)
-                diff = max(diff, abs(grid[i, j] - old))  # Track max change
+                # diff = max(diff, abs(grid[i, j] - old))  # Track max change
 
             # Ensure periodicity for the x-boundary (rightmost column)
             grid[i, N] = grid[i, 0]
 
         # Apply fixed y-boundary conditions
         grid[0, :] = 0.0       
-        grid[N, :] = 1.0       
+        grid[N, :] = 1.0
+
+        if np.allclose(grid, history[-1], atol=tol):
+            print(f"Converged at t = {t}")
+            break   
 
         history.append(grid.copy())
-        if diff < tol:
-            print(f"Converged at t = {t} with diff = {diff}")
-            break
-        if t % 1000 == 0:
-            print(f"Iteration {t}: max change = {diff}")
+        # if diff < tol:
+        #     print(f"Converged at t = {t} with diff = {diff}")
+        #     break
+        # if t % 1000 == 0:
+        #     print(f"Iteration {t}: max change = {diff}")
 
     return history, t
 
 if __name__ == '__main__':
     # Parameters
-    N = 100  # Grid size
+    N = 50  # Grid size
     max_iter = 1_000_000  # Maximum iterations
     tol = 1e-5  # Convergence tolerance
     print(f"max_iter: {max_iter}")
