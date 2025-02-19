@@ -24,7 +24,7 @@ def sor_simulation(omega: float, grid: np.ndarray, max_iter: int, N: int, tol: f
     Returns:
     tuple: (history, t) where history is a list of grid states and t is the iteration count.
     """
-    history = [grid.copy()]  
+    history = [grid.copy()]
     for t in range(1, max_iter + 1):
         diff = 0.0
 
@@ -55,10 +55,10 @@ def sor_simulation(omega: float, grid: np.ndarray, max_iter: int, N: int, tol: f
 
         history.append(grid.copy())
         if diff < tol:
-            print(f"Converged at t = {t} with diff = {diff}")
+            print(f"Converged at t = {t}")
             break
-        if t % 1000 == 0:
-            print(f"Iteration {t}: max change = {diff}")
+        # if t % 1000 == 0:
+        #     print(f"Iteration {t}: max change = {diff}")
 
     return history, t
 
