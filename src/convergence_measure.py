@@ -33,7 +33,7 @@ if __name__ == '__main__':
         jacobi.append(t_jacobi)
 
         grid = init_grid()
-        h_gauss, t_gauss = gauss_seidel_simulation(grid, max_iter, tol, N)
+        h_gauss, t_gauss = gauss_seidel_simulation(grid, max_iter, N, tol)
         gauss.append(t_gauss)
 
         for omega in omega_values:
