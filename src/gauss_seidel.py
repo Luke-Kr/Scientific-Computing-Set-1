@@ -32,7 +32,6 @@ def gauss_seidel_simulation(grid: np.ndarray, max_iter: int, N: int, tol: float)
                 up = grid[i, j + 1]
                 down = grid[i, j - 1]
 
-                # Gauss-Seidel update
                 grid[i, j] = 0.25 * (up + down + left + right)
 
 

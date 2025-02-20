@@ -34,27 +34,13 @@ def sor_simulation(omega: float, grid: np.ndarray, max_iter: int, N: int, tol: f
                 up = grid[i, j + 1]
                 down = grid[i, j - 1]
 
-                # SOR update
                 grid[i, j] = (1 - omega) * old + (omega / 4) * (up + down + left + right)
-                # diff = max(diff, abs(grid[i, j] - old))  # Track max change
 
-        #     # Ensure periodicity for the x-boundary
-        #     grid[i, -1] = grid[i, 0]
-
-        # # Reapply fixed boundary conditions
-        # grid[0, :] = 0.0   # Bottom: c(x, y=0) = 0
-        # grid[N, :] = 1.0   # Top: c(x, y=1) = 1
-
-        # # Enforce periodicity for the y boundaries
-        # grid[0, N] = grid[0, 0]
-        # grid[N, N] = grid[N, 0]
-
+        # Check for convergence
         if np.allclose(grid, history[-1], atol=tol):
             print(f"Converged at t = {t}")
             break
         history.append(grid.copy())
-        # if t % 1000 == 0:
-        #     print(f"Iteration {t}: max change = {diff}")
 
     return history, t
 

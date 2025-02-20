@@ -40,7 +40,7 @@ def jacobi_simulation(grid: np.ndarray, max_iter: int, N: int, tol: float):
             print(f"Converged at t = {t}")
             break
 
-        history.append(grid.copy())  # Store the current state in history
+        history.append(grid.copy())
         print(f"t: {t}")
 
     return history, t
