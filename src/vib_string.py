@@ -69,20 +69,21 @@ def run_simulation(u, x, c, dt, dx, init_cons, num_steps):
 def plot_wave_states(results, x, num_time_points=3):
     num_conditions = results.shape[0]
     time_indices = np.linspace(0, results.shape[2] - 1, num_time_points, dtype=int)
-    fig, axs = plt.subplots(num_conditions, 1, figsize=(10, 8))
+    fig, axs = plt.subplots(num_conditions, 1, figsize=(14, 12))
     if num_conditions == 1:
         axs = [axs]
 
     for i in range(num_conditions):
         for t_idx in time_indices:
             axs[i].plot(x, results[i, :, t_idx], label=f'Time = {t_idx * dt:.2f}s')
-        axs[i].set_title(f'Wave Evolution for Initial Condition {i + 1}')
-        axs[i].set_xlabel('Position along the string (x)')
-        axs[i].set_ylabel('Displacement (u)')
-        axs[i].legend()
+        axs[i].set_title(f'Wave Evolution for Initial Condition {i + 1}', fontsize=26)
+        axs[i].set_xlabel('Position along the string (x)', fontsize=24)
+        axs[i].set_ylabel('Displacement (u)', fontsize=24) 
+        axs[i].legend(fontsize=20, loc='upper right')
         axs[i].grid(True)
 
     plt.tight_layout()
+    plt.subplots_adjust(hspace=1)
     plt.savefig('fig/wave_evolution.png')
     plt.show()
 
@@ -107,5 +108,5 @@ if __name__ == "__main__":
     init_cons = [init_con_1, init_con_2, init_con_3]
     results = run_simulation(u, x, c, dt, dx, init_cons, num_steps)
     plot_wave_states(results, x)
-    for i in range(len(init_cons)):
-        animate_wave(results, x, i, f'fig/wave_animation_condition_{i + 1}.mp4')
+    #for i in range(len(init_cons)):
+        #animate_wave(results, x, i, f'fig/wave_animation_condition_{i + 1}.mp4')
