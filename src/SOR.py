@@ -9,8 +9,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numba import jit
 
+def init_mask(N):
+    mask = np.zeros((N + 1, N + 1))
+    mask[10:20, 10:20] = 1.0
+    mask[30:40, 30:40] = 2.0
+
+    return mask
+
 @jit(nopython=True)
-def sor_simulation(omega: float, grid: np.ndarray, max_iter: int, N: int, tol: float):
+def sor_simulation(omega: float, grid: np.ndarray, max_iter: int, N: int, tol: float, mask: np.ndarray):
     """
     Runs the Successive Over-Relaxation (SOR) iterative method for solving Laplace's equation.
 
@@ -28,11 +35,13 @@ def sor_simulation(omega: float, grid: np.ndarray, max_iter: int, N: int, tol: f
     for t in range(1, max_iter + 1):
         for j in range(1, N):
             for i in range(N+1):
+                if mask[i, j] == 1.0:
+                    continue
                 old = grid[i, j]
-                left = grid[(i - 1) % (N + 1), j]
-                right = grid[(i + 1) % (N + 1), j]
-                up = grid[i, j + 1]
-                down = grid[i, j - 1]
+                left = grid[i, j] if mask[(i - 1) % (N + 1), j] == 2 else grid[(i - 1) % (N + 1), j]
+                right = grid[i, j] if mask[(i + 1) % (N + 1), j] == 2 else grid[(i + 1) % (N + 1), j]
+                up = grid[i, j] if mask[i, j + 1] == 2 else grid[i, j + 1]
+                down = grid[i, j] if mask[i, j - 1] == 2 else grid[i, j - 1]
 
                 grid[i, j] = (1 - omega) * old + (omega / 4) * (up + down + left + right)
 
@@ -52,13 +61,20 @@ if __name__ == '__main__':
     omega = 1.9  # Relaxation factor
     print(f"max_iter: {max_iter}")
 
+    # Variable to initialize masking for question K and optional.
+    set_mask = True
+    if set_mask:
+        mask = init_mask(N)
+    else:
+        mask = np.zeros((N + 1, N + 1))
+
     grid = np.zeros((N + 1, N + 1))
     grid[:, N] = 1.0  # Top boundary condition c(x, y=1) = 1
     print("Grid shape:", grid.shape)
     print(grid)
 
     # Run the simulation
-    history, t = sor_simulation(omega, grid, max_iter, N, tol)
+    history, t = sor_simulation(omega, grid, max_iter, N, tol, mask)
     history = np.array(history)
     np.save(f'data/SOR_({N}x{N})_{t}.npy', history)
 
