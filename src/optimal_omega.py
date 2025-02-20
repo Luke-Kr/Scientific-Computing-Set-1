@@ -36,8 +36,8 @@ if __name__ == '__main__':
     for omega in omega_values:
         plt.plot(N_values, sor_results[omega], label=f'omega={omega}')
     plt.yscale('log')
-    plt.xlabel('p')
+    plt.xlabel('N')
     plt.ylabel('Iterations to Converge')
-    plt.title('Convergence Comparison')
+    plt.title('Optimal Omega for SOR Method')
     plt.legend()
     plt.savefig('fig/optimal_omega.png')
