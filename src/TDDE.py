@@ -17,7 +17,7 @@ def tdde_simulation(grid: np.ndarray, const: float, tsteps: int, N: int) -> np.n
     Simulates the time-dependent diffusion equation (TDDE) using the finite difference method.
 
     Parameters:
-    grid (np.ndarray): 3D NumPy array representing the simulation grid (2, N+1, N+1).
+    grid (np.ndarray): 2D NumPy array representing the simulation grid (N+1, N+1).
     const (float): Diffusion constant calculated as D * dt / dx**2.
     tsteps (int): Number of time steps to simulate.
     N (int): Grid size (N x N domain with additional boundary layer).
@@ -26,22 +26,23 @@ def tdde_simulation(grid: np.ndarray, const: float, tsteps: int, N: int) -> np.n
     np.ndarray: Simulation history at recorded intervals.
     """
     history = np.zeros((tsteps + 1, N + 1, N + 1))
-    history[0] = grid[0]
+    history[0] = grid
 
     for t in range(1, tsteps + 1):
+        prev = history[t - 1]
         for i in range(N + 1):
             for j in range(1, N):
-                grid[1, i, j] = grid[0, i, j] + const * (
-                    grid[0, (i + 1) % (N + 1), j] +
-                    grid[0, (i - 1) % (N + 1), j] +
-                    grid[0, i, j + 1] +
-                    grid[0, i, j - 1] -
-                    4 * grid[0, i, j]
+                grid[i, j] = prev[i, j] + const * (
+                    prev[(i + 1) % (N + 1), j] +
+                    prev[(i - 1) % (N + 1), j] +
+                    prev[i, j + 1] +
+                    prev[i, j - 1] -
+                    4 * prev[i, j]
                 )
 
-        grid[0], grid[1] = grid[1], grid[0]
+        # grid[0], grid[1] = grid[1], grid[0]
         # if t % 1000 == 0:
-        history[t] = grid[0]
+        history[t] = grid
         print(f"t: {t}")
 
     return history
@@ -59,8 +60,8 @@ if __name__ == '__main__':
     print(f"const: {const}")
     print(f"tsteps: {tsteps}")
 
-    grid = np.zeros((2, N + 1, N + 1))
-    grid[:, :, N] = 1.0  # Set top boundary condition
+    grid = np.zeros((N + 1, N + 1))
+    grid[:, N] = 1.0  # Set top boundary condition
     print("Grid shape:", grid.shape)
 
     # Run the simulation
