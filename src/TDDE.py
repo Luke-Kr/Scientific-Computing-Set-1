@@ -25,7 +25,7 @@ def tdde_simulation(grid: np.ndarray, const: float, tsteps: int, N: int) -> np.n
     Returns:
     np.ndarray: Simulation history at recorded intervals.
     """
-    history = np.zeros((int(tsteps / 1000) + 1, N + 1, N + 1))
+    history = np.zeros((tsteps + 1, N + 1, N + 1))
     history[0] = grid[0]
 
     for t in range(1, tsteps + 1):
@@ -40,8 +40,8 @@ def tdde_simulation(grid: np.ndarray, const: float, tsteps: int, N: int) -> np.n
                 )
 
         grid[0], grid[1] = grid[1], grid[0]
-        if t % 1000 == 0:
-            history[int(t / 1000)] = grid[0]
+        # if t % 1000 == 0:
+        history[t] = grid[0]
         print(f"t: {t}")
 
     return history
@@ -49,12 +49,12 @@ def tdde_simulation(grid: np.ndarray, const: float, tsteps: int, N: int) -> np.n
 
 if __name__ == '__main__':
     # Parameters
-    N = 100  # Grid size
+    N = 50  # Grid size
     D = 1  # Diffusion coefficient
     dx = dy = 1.0 / N  # Spatial step size
-    dt = 0.000001  # Time step size
+    tsteps = 10_000  # Total time steps
+    dt = 0.0001  # Time step size (1 / tsteps)
     const = D * dt / dx**2  # Diffusion constant
-    tsteps = 1000_000  # Total time steps
 
     print(f"const: {const}")
     print(f"tsteps: {tsteps}")
