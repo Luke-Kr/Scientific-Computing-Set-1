@@ -6,7 +6,7 @@ Question 1.1 "Vibrating String":
     A plot showing the time development is saved under "fig/wave_evolution.png"
     Three animations are saved under "wave_animation_condition_x.gif", where x indicates the initial condition used.
 
-Question 1.3 "The Time Dependent Diffusion Equation":
+Question 1.2 "The Time Dependent Diffusion Equation":
     Run TDDE.py
     This will plot the state of the grid at t=1, and timesteps in between will be saved in "data/TDDE_(`N`x`N`)_`timesteps`.npy.
     An animation can be generated from this timestep by running animate_TDDE.py.
@@ -14,13 +14,13 @@ Question 1.3 "The Time Dependent Diffusion Equation":
     show_diffusion.py will generated several heatmaps of different timesteps.
 
 Question 1.4 "The Jacobi Iteration":
-    jacobi.py will perform the jacobi iteration to solve the same diffusion as 1.2.
+    jacobi.py will perform the jacobi iteration to solve the 2D Laplace Equation.
 
 Question 1.5 "The Gauss-Seidel Iteration:
-    gauss_seidel.py will perform the gaus-seidel iteration to solve the same diffusion as 1.2.
+    gauss_seidel.py will perform the gaus-seidel iteration to solve the 2D Laplace Equation.
 
 Question 1.6 "Successive Over Relaxation"
-   SOR.py will perform the gaus-seidel iteration to solve the same diffusion as 1.2, in which objects can be placed either as sinks or isolated objects using a mask.
+   SOR.py will perform the gauss-seidel iteration to solve the 2D Laplace Equation. Objects can be placed in the domain either as sinks or isolated objects using a mask.
    convergence_measure.py makes use of jacobi.py, gauss_seidel.py and SOR.py to measure and plot rates of convergence for the different algorithms.
    optimal_omega.py generates a heatmap of SOR that can be used to find the optimal omega value for this problem.
    
