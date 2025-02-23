@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numba import jit
 
+
 @jit(nopython=True)
 def jacobi_simulation(grid: np.ndarray, max_iter: int, N: int, tol: float):
     """

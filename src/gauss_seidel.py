@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numba import jit
 
+
 @jit(nopython=True)
 def gauss_seidel_simulation(grid: np.ndarray, max_iter: int, N: int, tol: float):
     """
@@ -34,7 +35,6 @@ def gauss_seidel_simulation(grid: np.ndarray, max_iter: int, N: int, tol: float)
 
                 grid[i, j] = 0.25 * (up + down + left + right)
 
-
         # Check for convergence
         if np.allclose(grid, history[-1], atol=tol):
             print(f"Converged at t = {t}")
@@ -42,6 +42,7 @@ def gauss_seidel_simulation(grid: np.ndarray, max_iter: int, N: int, tol: float)
         history.append(grid.copy())
 
     return history, t
+
 
 if __name__ == '__main__':
     # Parameters

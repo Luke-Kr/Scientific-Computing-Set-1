@@ -6,8 +6,9 @@ import scipy.special as sp
 N = 50
 D = 1
 
+
 def analytical_solution(x, t, max_i=1000):
-    sqrt_dt = np.sqrt(D * t) if t > 0 else 1e-10 
+    sqrt_dt = np.sqrt(D * t) if t > 0 else 1e-10
     i_vals = np.arange(max_i)[:, None]
 
     term1 = sp.erfc((1 - x + 2 * i_vals) / (2 * sqrt_dt))
@@ -15,6 +16,7 @@ def analytical_solution(x, t, max_i=1000):
 
     c = np.sum(term1 - term2, axis=0)
     return c
+
 
 if __name__ == '__main__':
 
@@ -25,12 +27,12 @@ if __name__ == '__main__':
     x = np.linspace(0, 1, N + 1)
 
     print(history.shape)
-    
+
     fig, axs = plt.subplots(3, 1, figsize=(10, 10))
 
     # Plot the initial condition
 
-    axs[0].plot(x, history[10_000, :, 0] , label="t = 1")
+    axs[0].plot(x, history[10_000, :, 0], label="t = 1")
     axs[0].plot(x, history[1_000, :, 0], label="t = 0.1")
     axs[0].plot(x, history[100, :, 0], label="t = 0.01")
     axs[0].plot(x, history[10, :, 0], label="t = 0.001")
@@ -39,7 +41,6 @@ if __name__ == '__main__':
     axs[0].set_title("Numerical Solution")
     axs[0].set_xlabel("y")
     axs[0].set_ylabel("c")
-
 
     # Analytical solution (right) - Initialize with zeros
     analyticals = []
@@ -68,7 +69,5 @@ if __name__ == '__main__':
     axs[2].set_ylabel("c")
 
     # Difference
-    
-
 
     plt.show()
