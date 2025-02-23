@@ -13,7 +13,7 @@ def animate(history):
 
     def update(frame):
         im.set_array(history[frame])
-        ax.set_title(f"Time step: {frame/1000:.2f}")
+        ax.set_title(f"Time step: {frame/10000:.2f}")
         ax.set_xlabel("x")
         ax.set_ylabel("y")
         return [im]
@@ -34,20 +34,17 @@ def show_times(history):
     axs[0, 0].set_xlabel("x")
     axs[0, 0].set_ylabel("y")
 
-    axs[0, 1].imshow(history[1], cmap="inferno",
-                     origin="lower", extent=[0, 1, 0, 1])
+    axs[0, 1].imshow(history[10], cmap="inferno", origin="lower", extent=[0, 1, 0, 1])
     axs[0, 1].set_title("t = 0.001")
     axs[0, 1].set_xlabel("x")
     axs[0, 1].set_ylabel("y")
 
-    axs[0, 2].imshow(history[10], cmap="inferno",
-                     origin="lower", extent=[0, 1, 0, 1])
+    axs[0, 2].imshow(history[100], cmap="inferno", origin="lower", extent=[0, 1, 0, 1])
     axs[0, 2].set_title("t = 0.01")
     axs[0, 2].set_xlabel("x")
     axs[0, 2].set_ylabel("y")
 
-    axs[1, 0].imshow(history[100], cmap="inferno",
-                     origin="lower", extent=[0, 1, 0, 1])
+    axs[1, 0].imshow(history[1000], cmap="inferno", origin="lower", extent=[0, 1, 0, 1])
     axs[1, 0].set_title("t = 0.1")
     axs[1, 0].set_xlabel("x")
     axs[1, 0].set_ylabel("y")
@@ -70,8 +67,7 @@ def show_times(history):
 
 if __name__ == '__main__':
 
-    # Shape: (101, 101, 101)
-    history = np.load("data/TDDE_(100x100)_1000000.npy")
+    history = np.load("data/TDDE_(50x50)_10000.npy")  # Shape: (101, 101, 101)
 
     # Rotate the inner grid -90 degrees
     history = np.rot90(history, k=-1, axes=(1, 2))
