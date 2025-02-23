@@ -17,9 +17,8 @@ title = ax.set_title("Numerical Solution")
 ax.set_xlabel("x")
 ax.set_ylabel("y")
 
+
 # Update function
-
-
 def update(frame):
     im1.set_array(history[frame])
     title.set_text(f"Numerical Solution (t={frame/100:.2f})")
