@@ -88,4 +88,6 @@ if __name__ == '__main__':
     plt.imshow(history[-1].T, cmap='inferno', origin='lower')
     plt.colorbar()
     plt.title(f'SOR Convergence at t = {t}')
+    if set_mask:
+        plt.savefig('fig/objects.png')
     plt.show()
