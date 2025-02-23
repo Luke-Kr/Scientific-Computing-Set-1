@@ -5,12 +5,14 @@ from jacobi import jacobi_simulation
 from gauss_seidel import gauss_seidel_simulation
 from SOR import sor_simulation
 
+
 def init_grid():
     grid = np.zeros((N + 1, N + 1))
     grid[N, :] = 1.0  # Top boundary condition c(x, y=1) = 1
     print("Grid shape:", grid.shape)
 
     return grid
+
 
 if __name__ == '__main__':
     # Parameters
@@ -23,7 +25,7 @@ if __name__ == '__main__':
     sor_results = {omega: [] for omega in omega_values}
 
     for p in range(2, 9):
-        print(f"p: {p}") # Check
+        print(f"p: {p}")  # Check
 
         tol = 10**-p  # Convergence tolerance
         print(f"max_iter: {max_iter}")
@@ -40,7 +42,6 @@ if __name__ == '__main__':
             grid = init_grid()
             h_sor, t_sor = sor_simulation(omega, grid, max_iter, N, tol)
             sor_results[omega].append(t_sor)
-
 
     # Plot the final results with the y-axis as a log-lin scale
     plt.plot(range(2, 9), jacobi, label='Jacobi')

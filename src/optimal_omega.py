@@ -3,12 +3,13 @@ import matplotlib.pyplot as plt
 
 from SOR import sor_simulation
 
+
 def init_grid():
     grid = np.zeros((N + 1, N + 1))
     grid[N, :] = 1.0  # Top boundary condition c(x, y=1) = 1
-    # print("Grid shape:", grid.shape)
 
     return grid
+
 
 if __name__ == '__main__':
     max_iter = 1_000_000  # Maximum iterations
