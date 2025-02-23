@@ -26,7 +26,6 @@ if __name__ == '__main__':
         print(f"p: {p}") # Check
 
         tol = 10**-p  # Convergence tolerance
-        print(f"max_iter: {max_iter}")
 
         grid = init_grid()
         h_jacobi, t_jacobi = jacobi_simulation(grid, max_iter, N, tol)
