@@ -28,6 +28,6 @@ def update(frame):
 # Create animation
 ani = animation.FuncAnimation(
     fig, update, frames=100, interval=100, blit=False)
-ani.save("fig/TDDE_animation.gif", writer="imagemagick", fps=10)
+ani.save("fig/TDDE_animation.gif", writer="imagemagick", fps=100)
 
 plt.show()
